@@ -184,7 +184,7 @@ public class TabbedPageView: UIView {
 
 
 extension TabbedPageView: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let pageViewController = pageViewController else { return }
         if indexPath.row > tabs.count { return }
         
@@ -239,11 +239,11 @@ extension TabbedPageView: UICollectionViewDelegate {
 
 
 extension TabbedPageView: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return numberOfTabs
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! TabCollectionViewCell
         
         if indexPath.row < tabs.count {
@@ -259,7 +259,7 @@ extension TabbedPageView: UICollectionViewDataSource {
 
 extension TabbedPageView : UICollectionViewDelegateFlowLayout {
     // responsible for telling the layout the size of a given cell
-    func collectionView(_ collectionView: UICollectionView,
+    public func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         // Subtract 1 from the height and width so it doesn't complain about the cell being the same size as the container
@@ -267,13 +267,13 @@ extension TabbedPageView : UICollectionViewDelegateFlowLayout {
     }
     
     //  returns the spacing between the cells, headers, and footers. A constant is used to store the value
-    func collectionView(_ collectionView: UICollectionView,
+    public func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0.0;
     }
 }
@@ -282,7 +282,7 @@ extension TabbedPageView : UICollectionViewDelegateFlowLayout {
 
 
 extension TabbedPageView: UIScrollViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard let pageViewController = pageViewController else { return }
         // Page has already completed transition so stop
         if pageViewController.pendingIndex == pageViewController.currentIndex { return }

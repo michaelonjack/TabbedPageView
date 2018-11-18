@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PageViewController: UIPageViewController {
+public class PageViewController: UIPageViewController {
     
     var currentIndex = 0
     var pendingIndex = 0
@@ -25,7 +25,7 @@ class PageViewController: UIPageViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         
         self.delegate = self
@@ -42,7 +42,7 @@ class PageViewController: UIPageViewController {
 
 extension PageViewController: UIPageViewControllerDelegate {
     
-    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
+    public func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
         if pendingViewControllers.count > 0  {
             let pendingController = pendingViewControllers[0]
             if let index = self.controllers.index(of: pendingController) {
@@ -51,7 +51,7 @@ extension PageViewController: UIPageViewControllerDelegate {
         }
     }
     
-    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+    public func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         if completed {
             self.currentIndex = self.pendingIndex
         }
@@ -63,7 +63,7 @@ extension PageViewController: UIPageViewControllerDelegate {
 
 extension PageViewController: UIPageViewControllerDataSource {
     
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+    public func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         guard let controllerIndex = controllers.index(of: viewController) else {
             return nil
         }
@@ -83,7 +83,7 @@ extension PageViewController: UIPageViewControllerDataSource {
         return controllers[previousIndex]
     }
     
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+    public func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         guard let controllerIndex = controllers.index(of: viewController) else {
             return nil
         }
