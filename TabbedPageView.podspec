@@ -27,10 +27,10 @@ s.source = { :git => "https://github.com/michaelonjack/TabbedPageView.git",
 s.framework = "UIKit"
 
 # 8
-s.source_files = "TabbedPageView/**/*.{swift}"
+s.source_files = "TabbedPageView/*.{swift}"
 
 # 9
-s.resources = "TabbedPageView/**/*.{png,jpeg,jpg,storyboard,xib,xcassets}"
+s.resources = "TabbedPageView/*.{png,jpeg,jpg,storyboard,xib,xcassets}"
 
 # 10
 s.swift_version = "4.2"
