@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TabbedPageView: UIView {
+public class TabbedPageView: UIView {
     
     open var delegate: TabbedPageViewDelegate?
     open var dataSource: TabbedPageViewDataSource?
