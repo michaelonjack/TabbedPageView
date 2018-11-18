@@ -8,10 +8,10 @@ s.summary = "TabbedPageView allows a user to quickly create a UIView containing 
 s.requires_arc = true
 
 # 2
-s.version = "0.0.1"
+s.version = "0.0.2"
 
 # 3
-s.license = { :type => "MIT", :file => "LICENSE" }
+s.license = { :type => "MIT" }
 
 # 4 - Replace with your name and e-mail address
 s.author = { "Michael Onjack" => "mikeonjack@gmail.com" }
@@ -30,7 +30,7 @@ s.framework = "UIKit"
 s.source_files = "TabbedPageView/*.{swift}"
 
 # 9
-s.resources = "TabbedPageView/*.{png,jpeg,jpg,storyboard,xib,xcassets}"
+#s.resources = "TabbedPageView/**/*.{png,jpeg,jpg,storyboard,xib,xcassets}"
 
 # 10
 s.swift_version = "4.2"

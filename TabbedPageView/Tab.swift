@@ -13,12 +13,12 @@ public struct Tab {
     var icon: UIImage?
     var viewController: UIViewController!
     
-    init(viewController: UIViewController, iconImage: UIImage) {
+    public init(viewController: UIViewController, iconImage: UIImage) {
         self.icon = iconImage
         self.viewController = viewController
     }
     
-    init(viewController: UIViewController) {
+    public init(viewController: UIViewController) {
         self.viewController = viewController
     }
 }

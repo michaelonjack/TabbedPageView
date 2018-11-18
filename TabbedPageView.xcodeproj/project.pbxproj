@@ -93,6 +93,7 @@
 				B1EA3A0D21A13727002C7070 /* TabbedPageViewDataSource.swift */,
 				B1EA3A0B21A13727002C7070 /* TabbedPageViewDelegate.swift */,
 				B1EA3A0721A13727002C7070 /* TabCollectionViewCell.swift */,
+				B1EA3A1521A13CC0002C7070 /* Resources */,
 				B1EA39E321A12CAA002C7070 /* Info.plist */,
 			);
 			path = TabbedPageView;
@@ -105,6 +106,13 @@
 				B1EA39EF21A12CAA002C7070 /* Info.plist */,
 			);
 			path = TabbedPageViewTests;
+			sourceTree = "<group>";
+		};
+		B1EA3A1521A13CC0002C7070 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
