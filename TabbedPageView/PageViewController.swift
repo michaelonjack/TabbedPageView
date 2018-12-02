@@ -30,7 +30,7 @@ public class PageViewController: UIPageViewController {
         
         self.delegate = self
         self.dataSource = self
-
+        
         // This sets up the first view that will show up on our page control
         if controllers.count > 0 {
             setViewControllers([controllers[0]], direction: .forward, animated: true, completion: nil)

@@ -9,17 +9,18 @@
 import UIKit
 
 public protocol TabbedPageViewDataSource: AnyObject {
-    func tabs() -> [Tab]
-    func sliderColor() -> UIColor
-    func tabBarPosition() -> TabBarPosition
+    func tabbedPageView(_ tabbedPageView: TabbedPageView, tabForIndex index: Int) -> Tab
+    func tabbedPageView(_ tabbedPageView: TabbedPageView, positionOf tabBar: TabBar) -> TabBarPosition
+    func tabbedPageView(_ tabbedPageView: TabbedPageView, colorOfSelectionIndicatorIn tabBar: TabBar) -> UIColor
+    func numberOfTabs(in tabbedPageView: TabbedPageView) -> Int
 }
 
 public extension TabbedPageViewDataSource {
-    func sliderColor() -> UIColor {
+    func tabbedPageView(_ tabbedPageView: TabbedPageView, colorOfSelectionIndicatorIn tabBar: TabBar) -> UIColor {
         return UIColor.blue
     }
     
-    func tabBarPosition() -> TabBarPosition {
+    func tabbedPageView(_ tabbedPageView: TabbedPageView, positionOf tabBar: TabBar) -> TabBarPosition {
         return .top
     }
 }

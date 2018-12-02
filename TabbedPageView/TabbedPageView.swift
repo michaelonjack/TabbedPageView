@@ -8,60 +8,28 @@
 
 import UIKit
 
-public class TabbedPageView: UIView {
+open class TabbedPageView: UIView {
     
     open var delegate: TabbedPageViewDelegate?
     open var dataSource: TabbedPageViewDataSource?
     
     open var pageViewController:PageViewController?
     
-    private var tabs: [Tab] = []
-    
-    private var numberOfTabs = 1
-    
-    private var tabBarPosition: TabBarPosition = .top
-    
-    private var sliderColor: UIColor = .blue
-    
-    lazy var collectionViewFlowLayout: UICollectionViewFlowLayout = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .horizontal
-        
-        return flowLayout
-    }()
-    
-    // The collection view that contains the tabs
-    lazy var collectionView: UICollectionView = {
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: self.collectionViewFlowLayout)
-        cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.backgroundColor = UIColor.clear
-        cv.setCollectionViewLayout(self.collectionViewFlowLayout, animated: true)
-        cv.dataSource = self
-        cv.delegate = self
-        cv.register(TabCollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
-        
-        return cv
-    }()
-    
     // The container view that contains the page view controller
-    lazy var containerView: UIView = {
-       let view = UIView(frame: .zero)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.purple
-        
-        return view
-    }()
-    
-    // The slider bar used to indicate which tab is currently showing
-    private var selectionSliderLeadingConstraint: NSLayoutConstraint?
-    lazy var selectionSlider: UIView = {
+    private lazy var containerView: UIView = {
         let view = UIView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.red
         
         return view
     }()
-
+    
+    private lazy var tabBar: TabBar = {
+        let tb = TabBar(frame: CGRect.zero)
+        tb.translatesAutoresizingMaskIntoConstraints = false
+        
+        return tb
+    }()
+    
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupView()
@@ -71,68 +39,80 @@ public class TabbedPageView: UIView {
         super.init(frame: frame)
         setupView()
     }
-
+    
+    /// Adds the necessary subviews to the `TabbedPageView`
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
         
-        addSubview(collectionView)
         addSubview(containerView)
-        addSubview(selectionSlider)
+        addSubview(tabBar)
     }
     
+    /// Adds the necessary constraints to the subviews of the `TabbedPageView`
+    ///
+    /// Called when the `TabbedPageView`'s is reloaded after the delegate and datasource are set
     private func setupLayout() {
+        
+        let tabBarPosition = dataSource!.tabbedPageView(self, positionOf: tabBar)
         
         switch tabBarPosition {
         case .top:
             NSLayoutConstraint.activate([
                 // Collection view constraints
-                collectionView.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
+                tabBar.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
                 
                 // Container view constraint
-                containerView.topAnchor.constraint(equalTo: selectionSlider.bottomAnchor, constant: 0),
+                containerView.topAnchor.constraint(equalTo: tabBar.bottomAnchor, constant: 0),
                 containerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0),
-                
-                // Selection indicator constraints
-                selectionSlider.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 0),
-            ])
+                ])
             
         case .bottom:
             NSLayoutConstraint.activate([
                 // Collection view constraints
-                collectionView.bottomAnchor.constraint(equalTo: selectionSlider.topAnchor, constant: 0),
+                tabBar.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0),
                 
                 // Container view constraint
                 containerView.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
-                containerView.bottomAnchor.constraint(equalTo: collectionView.topAnchor, constant: 0),
-                
-                // Selection indicator constraints
-                selectionSlider.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0),
-            ])
+                containerView.bottomAnchor.constraint(equalTo: tabBar.topAnchor, constant: 0),
+                ])
         }
         
-        selectionSliderLeadingConstraint = selectionSlider.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0)
-        
         NSLayoutConstraint.activate([
-            // Collection view constraints
-            collectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0),
-            collectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0),
-            collectionView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.064),
+            // Tab bar constraints
+            tabBar.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0),
+            tabBar.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0),
+            tabBar.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.07),
             
             // Container view constraint
             containerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0),
             containerView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0),
-            
-            // Selection indicator constraints
-            selectionSliderLeadingConstraint!,
-            selectionSlider.widthAnchor.constraint(equalTo: self.collectionView.widthAnchor, multiplier: CGFloat(1)/CGFloat(numberOfTabs)),
-            selectionSlider.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.007)
-        ])
+            ])
+    }
+    
+    private func initializeTabBar() {
+        let tabBarPosition = dataSource!.tabbedPageView(self, positionOf: tabBar)
+        var tabs:[Tab] = []
+        for index in 0..<dataSource!.numberOfTabs(in: self) {
+            let tab = dataSource!.tabbedPageView(self, tabForIndex: index)
+            tabs.append(tab)
+        }
+        
+        DispatchQueue.main.async {
+            self.tabBar.position = tabBarPosition
+            self.tabBar.tabs = tabs
+            self.tabBar.tabWidth = self.delegate?.widthForTabs(in: self) ?? self.bounds.size.width / CGFloat(tabs.count)
+            self.tabBar.tabCollectionView.delegate = self
+            self.tabBar.tabCollectionView.dataSource = self
+            self.tabBar.selectionSlider.backgroundColor = self.dataSource!.tabbedPageView(self, colorOfSelectionIndicatorIn: self.tabBar)
+            self.tabBar.reload()
+        }
     }
     
     private func initializePageViewController() {
         
         var pageControllers:[UIViewController] = []
-        for tab in tabs {
+        for index in 0..<dataSource!.numberOfTabs(in: self) {
+            let tab = dataSource!.tabbedPageView(self, tabForIndex: index)
             pageControllers.append(tab.viewController)
         }
         
@@ -146,7 +126,7 @@ public class TabbedPageView: UIView {
             pageViewController!.view.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 0),
             pageViewController!.view.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: 0),
             pageViewController!.view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 0)
-        ])
+            ])
         
         // Find the page controller scroll view to set the delegate
         for view in pageViewController!.view.subviews {
@@ -158,25 +138,16 @@ public class TabbedPageView: UIView {
     }
     
     public func reloadData() {
-        guard let dataSource = dataSource else { return }
+        guard let _ = dataSource else { return }
         
-        // Initialize member variables
-        tabs = dataSource.tabs()
-        numberOfTabs = dataSource.tabs().count
-        sliderColor = dataSource.sliderColor()
-        tabBarPosition = dataSource.tabBarPosition()
-        
-        // Add constraints
-        setupLayout()
+        // Once the tabs are set, create the tab bar
+        initializeTabBar()
         
         // Once the page controllers are set, create the page view controller
         initializePageViewController()
         
-        // Once the slider color is set, update the slider color
-        selectionSlider.backgroundColor = sliderColor
-        
-        // Once the tabImages are set, reload the collection view
-        collectionView.reloadData()
+        // Add constraints
+        setupLayout()
     }
 }
 
@@ -186,7 +157,6 @@ public class TabbedPageView: UIView {
 extension TabbedPageView: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let pageViewController = pageViewController else { return }
-        if indexPath.row > tabs.count { return }
         
         // The direction of the scroll animation
         var scrollDirection = UIPageViewController.NavigationDirection.forward
@@ -211,8 +181,8 @@ extension TabbedPageView: UICollectionViewDelegate {
                 nextIndex = nextIndex + 1
             }
         }
-        
-        // If the selected index is before the current page, set the scroll direction to be reverse
+            
+            // If the selected index is before the current page, set the scroll direction to be reverse
         else if pageViewController.currentIndex > indexPath.row {
             scrollDirection = UIPageViewController.NavigationDirection.reverse
             var nextIndex = pageViewController.currentIndex - 1
@@ -232,6 +202,12 @@ extension TabbedPageView: UICollectionViewDelegate {
                 nextIndex = nextIndex - 1
             }
         }
+        
+        DispatchQueue.main.async {
+            self.tabBar.tabCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        }
+        
+        delegate?.tabbedPageView(self, didSelectTabAt: indexPath.row)
     }
 }
 
@@ -240,14 +216,14 @@ extension TabbedPageView: UICollectionViewDelegate {
 
 extension TabbedPageView: UICollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return numberOfTabs
+        return dataSource?.numberOfTabs(in: self) ?? 0
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! TabCollectionViewCell
         
-        if indexPath.row < tabs.count {
-            cell.imageView.image = tabs[indexPath.row].icon
+        if indexPath.row < dataSource?.numberOfTabs(in: self) ?? 0 {
+            cell.imageView.image = dataSource?.tabbedPageView(self, tabForIndex: indexPath.row).icon
         }
         
         return cell
@@ -260,16 +236,23 @@ extension TabbedPageView: UICollectionViewDataSource {
 extension TabbedPageView : UICollectionViewDelegateFlowLayout {
     // responsible for telling the layout the size of a given cell
     public func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+                               layout collectionViewLayout: UICollectionViewLayout,
+                               sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let numberOfTabs = dataSource?.numberOfTabs(in: self) ?? 0
+        var tabWidth = collectionView.bounds.size.width / CGFloat(numberOfTabs)
+        if let width = self.delegate?.widthForTabs(in: self) {
+            tabWidth = width
+        }
+        
         // Subtract 1 from the height and width so it doesn't complain about the cell being the same size as the container
-        return CGSize(width: collectionView.bounds.size.width/CGFloat(numberOfTabs) - 1, height: collectionView.bounds.size.height - 1)
+        return CGSize(width: tabWidth - 1, height: collectionView.bounds.size.height - 1)
     }
     
     //  returns the spacing between the cells, headers, and footers. A constant is used to store the value
     public func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        insetForSectionAt section: Int) -> UIEdgeInsets {
+                               layout collectionViewLayout: UICollectionViewLayout,
+                               insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     }
     
@@ -282,28 +265,51 @@ extension TabbedPageView : UICollectionViewDelegateFlowLayout {
 
 
 extension TabbedPageView: UIScrollViewDelegate {
+    
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard let pageViewController = pageViewController else { return }
-        // Page has already completed transition so stop
-        if pageViewController.pendingIndex == pageViewController.currentIndex { return }
         
-        let scrollViewWidth = scrollView.frame.width
-        let tabWidth = scrollViewWidth / CGFloat(self.numberOfTabs)
-        let scrollViewContentOffset = scrollView.contentOffset.x
-        let percentScrolled = (scrollViewContentOffset - scrollViewWidth) / scrollViewWidth
-        let initialSpacing = CGFloat(pageViewController.currentIndex) * (scrollViewWidth / CGFloat(self.numberOfTabs))
-        
-        // Scrolling to the right
-        if percentScrolled > 0 && pageViewController.currentIndex < self.numberOfTabs-1 {
+        /// The user is scrolling through the tabs
+        if scrollView == tabBar.tabCollectionView {
+            let positionDifference = scrollView.contentOffset.x - tabBar.tabCollectionViewPreviousContentOffset
+            tabBar.tabCollectionViewPreviousContentOffset = scrollView.contentOffset.x
+            
             DispatchQueue.main.async {
-                self.selectionSliderLeadingConstraint!.constant = initialSpacing + (tabWidth * percentScrolled)
+                // We multiply by -1 because we need the slider to move in the opposite direction of the scroll
+                // i.e. If user reveals more of left side of collection view, slider should move right
+                self.tabBar.selectionSliderLeadingConstraint!.constant += positionDifference * -1
             }
         }
             
-        // Scrolling to the left
-        else if percentScrolled < 0 && pageViewController.currentIndex > 0 {
-            DispatchQueue.main.async {
-                self.selectionSliderLeadingConstraint!.constant = initialSpacing - (tabWidth * percentScrolled * -1)
+            
+            /// The user is scrolling through the pages
+        else {
+            guard let pageViewController = pageViewController else { return }
+            
+            // Page has already completed transition so stop
+            if pageViewController.pendingIndex == pageViewController.currentIndex { return }
+            
+            let numberOfTabs = dataSource?.numberOfTabs(in: self) ?? 1
+            let scrollViewWidth = scrollView.frame.width
+            var tabWidth = self.bounds.size.width / CGFloat(numberOfTabs)
+            if let width = self.delegate?.widthForTabs(in: self) {
+                tabWidth = width
+            }
+            let scrollViewContentOffset = scrollView.contentOffset.x
+            let percentScrolled = (scrollViewContentOffset - scrollViewWidth) / scrollViewWidth
+            let initialSpacing = CGFloat(pageViewController.currentIndex) * tabWidth - tabBar.tabCollectionView.contentOffset.x
+            
+            // Scrolling to the right
+            if percentScrolled > 0 && pageViewController.currentIndex < numberOfTabs-1 {
+                DispatchQueue.main.async {
+                    self.tabBar.selectionSliderLeadingConstraint!.constant = initialSpacing + (tabWidth * percentScrolled)
+                }
+            }
+                
+                // Scrolling to the left
+            else if percentScrolled < 0 && pageViewController.currentIndex > 0 {
+                DispatchQueue.main.async {
+                    self.tabBar.selectionSliderLeadingConstraint!.constant = initialSpacing - (tabWidth * percentScrolled * -1)
+                }
             }
         }
     }
