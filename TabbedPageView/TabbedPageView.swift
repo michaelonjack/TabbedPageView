@@ -43,6 +43,7 @@ open class TabbedPageView: UIView {
     /// Adds the necessary subviews to the `TabbedPageView`
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
+        clipsToBounds = true
         
         addSubview(containerView)
         addSubview(tabBar)
@@ -245,8 +246,7 @@ extension TabbedPageView : UICollectionViewDelegateFlowLayout {
             tabWidth = width
         }
         
-        // Subtract 1 from the height and width so it doesn't complain about the cell being the same size as the container
-        return CGSize(width: tabWidth - 1, height: collectionView.bounds.size.height - 1)
+        return CGSize(width: tabWidth, height: collectionView.bounds.size.height)
     }
     
     //  returns the spacing between the cells, headers, and footers. A constant is used to store the value
