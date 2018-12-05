@@ -101,7 +101,7 @@ open class TabbedPageView: UIView {
         DispatchQueue.main.async {
             self.tabBar.position = tabBarPosition
             self.tabBar.tabs = tabs
-            self.tabBar.tabWidth = self.delegate?.widthForTabs(in: self) ?? self.bounds.size.width / CGFloat(tabs.count)
+            self.tabBar.tabWidth = self.delegate?.tabWidth(for: self.tabBar, in: self) ?? self.bounds.size.width / CGFloat(tabs.count)
             self.tabBar.tabCollectionView.delegate = self
             self.tabBar.tabCollectionView.dataSource = self
             self.tabBar.selectionSlider.backgroundColor = self.dataSource!.tabbedPageView(self, colorOfSelectionIndicatorIn: self.tabBar)
@@ -242,7 +242,7 @@ extension TabbedPageView : UICollectionViewDelegateFlowLayout {
         
         let numberOfTabs = dataSource?.numberOfTabs(in: self) ?? 0
         var tabWidth = collectionView.bounds.size.width / CGFloat(numberOfTabs)
-        if let width = self.delegate?.widthForTabs(in: self) {
+        if let width = self.delegate?.tabWidth(for: self.tabBar, in: self) {
             tabWidth = width
         }
         
@@ -291,7 +291,7 @@ extension TabbedPageView: UIScrollViewDelegate {
             let numberOfTabs = dataSource?.numberOfTabs(in: self) ?? 1
             let scrollViewWidth = scrollView.frame.width
             var tabWidth = self.bounds.size.width / CGFloat(numberOfTabs)
-            if let width = self.delegate?.widthForTabs(in: self) {
+            if let width = self.delegate?.tabWidth(for: self.tabBar, in: self) {
                 tabWidth = width
             }
             let scrollViewContentOffset = scrollView.contentOffset.x

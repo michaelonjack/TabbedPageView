@@ -10,7 +10,7 @@ import UIKit
 
 public protocol TabbedPageViewDelegate: AnyObject {
     func tabbedPageView(_ tabbedPageView: TabbedPageView, didSelectTabAt index: Int)
-    func widthForTabs(in tabbedPageView: TabbedPageView) -> CGFloat?
+    func tabWidth(for tabBar: TabBar, in tabbedPageView: TabbedPageView) -> CGFloat?
 }
 
 public extension TabbedPageViewDelegate {
@@ -18,7 +18,7 @@ public extension TabbedPageViewDelegate {
         return
     }
     
-    func widthForTabs(in tabbedPageView: TabbedPageView) -> CGFloat? {
+    func tabWidth(for tabBar: TabBar, in tabbedPageView: TabbedPageView) -> CGFloat? {
         return nil
     }
 }
