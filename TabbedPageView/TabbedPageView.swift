@@ -313,4 +313,16 @@ extension TabbedPageView: UIScrollViewDelegate {
             }
         }
     }
+    
+    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        guard let currentPageIndex = pageViewController?.currentIndex else { return }
+        guard let pendingPageIndex = pageViewController?.pendingIndex else { return }
+        
+        // If the user successfully scrolled to the next page, scroll to the correct index in the tab collection view
+        if currentPageIndex == pendingPageIndex {
+            DispatchQueue.main.async {
+                self.tabBar.tabCollectionView.scrollToItem(at: IndexPath(row: currentPageIndex, section: 0), at: .centeredHorizontally, animated: true)
+            }
+        }
+    }
 }
