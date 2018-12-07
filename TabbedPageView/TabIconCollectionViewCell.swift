@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TabCollectionViewCell: UICollectionViewCell {
+class TabIconCollectionViewCell: UICollectionViewCell {
     
     lazy var imageView: UIImageView = {
         var iv = UIImageView(frame: .zero)

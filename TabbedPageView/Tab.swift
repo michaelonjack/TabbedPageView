@@ -10,15 +10,11 @@ import UIKit
 
 
 public struct Tab {
-    var icon: UIImage?
+    var type: TabType
     var viewController: UIViewController!
     
-    public init(viewController: UIViewController, iconImage: UIImage) {
-        self.icon = iconImage
-        self.viewController = viewController
-    }
-    
-    public init(viewController: UIViewController) {
+    public init(viewController: UIViewController, type: TabType) {
+        self.type = type
         self.viewController = viewController
     }
 }

@@ -1,6 +1,6 @@
 //
 //  TabBar.swift
-//  Test
+//  TabbedPageView
 //
 //  Created by Michael Onjack on 11/27/18.
 //  Copyright © 2018 Michael Onjack. All rights reserved.
@@ -24,7 +24,8 @@ public class TabBar: UIView {
         cv.showsHorizontalScrollIndicator = false
         cv.backgroundColor = UIColor.clear
         cv.setCollectionViewLayout(self.tabCollectionViewFlowLayout, animated: true)
-        cv.register(TabCollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
+        cv.register(TabIconCollectionViewCell.self, forCellWithReuseIdentifier: "IconCell")
+        cv.register(TabLabelCollectionViewCell.self, forCellWithReuseIdentifier: "LabelCell")
         
         return cv
     }()

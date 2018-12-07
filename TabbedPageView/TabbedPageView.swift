@@ -221,13 +221,27 @@ extension TabbedPageView: UICollectionViewDataSource {
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! TabCollectionViewCell
+        guard let tab = dataSource?.tabbedPageView(self, tabForIndex: indexPath.row) else { return UICollectionViewCell(frame: .zero) }
         
-        if indexPath.row < dataSource?.numberOfTabs(in: self) ?? 0 {
-            cell.imageView.image = dataSource?.tabbedPageView(self, tabForIndex: indexPath.row).icon
+        switch tab.type {
+        case .icon(let iconImage):
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "IconCell", for: indexPath) as! TabIconCollectionViewCell
+            cell.imageView.image = iconImage
+            
+            return cell
+            
+        case .text(let title):
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LabelCell", for: indexPath) as! TabLabelCollectionViewCell
+            cell.label.text = title
+            
+            return cell
+            
+        case .attributedText(let attributedTitle):
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LabelCell", for: indexPath) as! TabLabelCollectionViewCell
+            cell.label.attributedText = attributedTitle
+            
+            return cell
         }
-        
-        return cell
     }
 }
 
