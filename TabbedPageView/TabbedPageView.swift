@@ -104,7 +104,8 @@ open class TabbedPageView: UIView {
             self.tabBar.tabWidth = self.delegate?.tabWidth(for: self.tabBar, in: self) ?? self.bounds.size.width / CGFloat(tabs.count)
             self.tabBar.tabCollectionView.delegate = self
             self.tabBar.tabCollectionView.dataSource = self
-            self.tabBar.selectionSlider.backgroundColor = self.dataSource!.tabbedPageView(self, colorOfSelectionIndicatorIn: self.tabBar)
+            self.tabBar.backgroundColor = self.dataSource!.tabbedPageView(self, backgroundColorOf: self.tabBar)
+            self.tabBar.selectionSlider.backgroundColor = self.dataSource!.tabbedPageView(self, colorOfSelectionSliderIn: self.tabBar)
             self.tabBar.reload()
         }
     }
