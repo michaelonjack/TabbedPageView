@@ -40,11 +40,11 @@ public class TabBar: UIView {
     }()
     
     internal var tabs: [Tab] = []
-    internal var position: TabBarPosition = .top
-    internal var tabWidth: CGFloat = 0
-    internal var sliderColor:UIColor = UIColor.blue
     internal var sliderInitialOffset:CGFloat = 0
     internal var tabCollectionViewPreviousContentOffset: CGFloat = 0
+    public var position: TabBarPosition = .top
+    public var tabWidth: CGFloat?
+    public var sliderColor:UIColor = UIColor.blue
     
     
     public required init?(coder aDecoder: NSCoder) {
@@ -119,7 +119,7 @@ public class TabBar: UIView {
             
             // Selection indicator constraints
             selectionSliderLeadingConstraint!,
-            selectionSlider.widthAnchor.constraint(equalToConstant: tabWidth),
+            selectionSlider.widthAnchor.constraint(equalToConstant: tabWidth ?? 0),
             selectionSlider.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.08)
             ])
     }

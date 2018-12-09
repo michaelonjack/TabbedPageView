@@ -23,7 +23,7 @@ open class TabbedPageView: UIView {
         return view
     }()
     
-    private lazy var tabBar: TabBar = {
+    public lazy var tabBar: TabBar = {
         let tb = TabBar(frame: CGRect.zero)
         tb.translatesAutoresizingMaskIntoConstraints = false
         
@@ -54,9 +54,7 @@ open class TabbedPageView: UIView {
     /// Called when the `TabbedPageView`'s is reloaded after the delegate and datasource are set
     private func setupLayout() {
         
-        let tabBarPosition = dataSource!.tabbedPageView(self, positionOf: tabBar)
-        
-        switch tabBarPosition {
+        switch tabBar.position {
         case .top:
             NSLayoutConstraint.activate([
                 // Collection view constraints
@@ -91,7 +89,6 @@ open class TabbedPageView: UIView {
     }
     
     private func initializeTabBar() {
-        let tabBarPosition = dataSource!.tabbedPageView(self, positionOf: tabBar)
         var tabs:[Tab] = []
         for index in 0..<dataSource!.numberOfTabs(in: self) {
             let tab = dataSource!.tabbedPageView(self, tabForIndex: index)
@@ -99,13 +96,13 @@ open class TabbedPageView: UIView {
         }
         
         DispatchQueue.main.async {
-            self.tabBar.position = tabBarPosition
             self.tabBar.tabs = tabs
-            self.tabBar.tabWidth = self.delegate?.tabWidth(for: self.tabBar, in: self) ?? self.bounds.size.width / CGFloat(tabs.count)
+            if self.tabBar.tabWidth == nil {
+                self.tabBar.tabWidth = self.bounds.size.width / CGFloat(tabs.count)
+            }
             self.tabBar.tabCollectionView.delegate = self
             self.tabBar.tabCollectionView.dataSource = self
-            self.tabBar.backgroundColor = self.dataSource!.tabbedPageView(self, backgroundColorOf: self.tabBar)
-            self.tabBar.selectionSlider.backgroundColor = self.dataSource!.tabbedPageView(self, colorOfSelectionSliderIn: self.tabBar)
+            self.tabBar.selectionSlider.backgroundColor = self.tabBar.sliderColor
             self.tabBar.reload()
         }
     }
@@ -255,13 +252,7 @@ extension TabbedPageView : UICollectionViewDelegateFlowLayout {
                                layout collectionViewLayout: UICollectionViewLayout,
                                sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        let numberOfTabs = dataSource?.numberOfTabs(in: self) ?? 0
-        var tabWidth = collectionView.bounds.size.width / CGFloat(numberOfTabs)
-        if let width = self.delegate?.tabWidth(for: self.tabBar, in: self) {
-            tabWidth = width
-        }
-        
-        return CGSize(width: tabWidth, height: collectionView.bounds.size.height)
+        return CGSize(width: self.tabBar.tabWidth ?? 0, height: collectionView.bounds.size.height)
     }
     
     //  returns the spacing between the cells, headers, and footers. A constant is used to store the value
@@ -305,10 +296,7 @@ extension TabbedPageView: UIScrollViewDelegate {
             
             let numberOfTabs = dataSource?.numberOfTabs(in: self) ?? 1
             let scrollViewWidth = scrollView.frame.width
-            var tabWidth = self.bounds.size.width / CGFloat(numberOfTabs)
-            if let width = self.delegate?.tabWidth(for: self.tabBar, in: self) {
-                tabWidth = width
-            }
+            let tabWidth = self.tabBar.tabWidth ?? 0
             let scrollViewContentOffset = scrollView.contentOffset.x
             let percentScrolled = (scrollViewContentOffset - scrollViewWidth) / scrollViewWidth
             let initialSpacing = CGFloat(pageViewController.currentIndex) * tabWidth - tabBar.tabCollectionView.contentOffset.x
@@ -334,7 +322,7 @@ extension TabbedPageView: UIScrollViewDelegate {
         guard let pendingPageIndex = pageViewController?.pendingIndex else { return }
         
         // If the user successfully scrolled to the next page, scroll to the correct index in the tab collection view
-        if currentPageIndex == pendingPageIndex {
+        if currentPageIndex == pendingPageIndex && scrollView != self.tabBar.tabCollectionView {
             DispatchQueue.main.async {
                 self.tabBar.tabCollectionView.scrollToItem(at: IndexPath(row: currentPageIndex, section: 0), at: .centeredHorizontally, animated: true)
             }
