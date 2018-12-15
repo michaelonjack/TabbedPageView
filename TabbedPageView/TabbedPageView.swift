@@ -202,10 +202,6 @@ extension TabbedPageView: UICollectionViewDelegate {
             }
         }
         
-        DispatchQueue.main.async {
-            self.tabBar.tabCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-        }
-        
         delegate?.tabbedPageView(self, didSelectTabAt: indexPath.row)
     }
 }
@@ -287,7 +283,7 @@ extension TabbedPageView: UIScrollViewDelegate {
         }
             
             
-            /// The user is scrolling through the pages
+        /// The user is scrolling through the pages
         else {
             guard let pageViewController = pageViewController else { return }
             
@@ -299,19 +295,38 @@ extension TabbedPageView: UIScrollViewDelegate {
             let tabWidth = self.tabBar.tabWidth ?? 0
             let scrollViewContentOffset = scrollView.contentOffset.x
             let percentScrolled = (scrollViewContentOffset - scrollViewWidth) / scrollViewWidth
+            
             let initialSpacing = CGFloat(pageViewController.currentIndex) * tabWidth - tabBar.tabCollectionView.contentOffset.x
             
             // Scrolling to the right
             if percentScrolled > 0 && pageViewController.currentIndex < numberOfTabs-1 {
                 DispatchQueue.main.async {
-                    self.tabBar.selectionSliderLeadingConstraint!.constant = initialSpacing + (tabWidth * percentScrolled)
+                    switch self.tabBar.transitionStyle {
+                    case .normal:
+                        self.tabBar.selectionSliderLeadingConstraint!.constant = initialSpacing + (tabWidth * percentScrolled)
+                    case .sticky:
+                        self.tabBar.selectionSliderWidthConstraint!.constant = tabWidth + (tabWidth * (percentScrolled + CGFloat(pageViewController.pagesScrolledForCurrentTransition)))
+                    }
                 }
             }
                 
-                // Scrolling to the left
+            // Scrolling to the left
             else if percentScrolled < 0 && pageViewController.currentIndex > 0 {
                 DispatchQueue.main.async {
-                    self.tabBar.selectionSliderLeadingConstraint!.constant = initialSpacing - (tabWidth * percentScrolled * -1)
+                    switch self.tabBar.transitionStyle {
+                    case .normal:
+                        self.tabBar.selectionSliderLeadingConstraint!.constant = initialSpacing - (tabWidth * percentScrolled * -1)
+                    case .sticky:
+                        self.tabBar.selectionSliderLeadingConstraint!.constant = initialSpacing - (tabWidth * percentScrolled * -1)
+                        self.tabBar.selectionSliderWidthConstraint!.constant = tabWidth + (tabWidth * (percentScrolled - CGFloat(pageViewController.pagesScrolledForCurrentTransition)) * -1)
+                    }
+                }
+            }
+            
+            DispatchQueue.main.async {
+                // If the percent scrolled passes 1.0, it means we have fully transitioned past a page
+                if percentScrolled >= 1 || percentScrolled <= -1 {
+                    pageViewController.pagesScrolledForCurrentTransition += 1
                 }
             }
         }
@@ -323,8 +338,55 @@ extension TabbedPageView: UIScrollViewDelegate {
         
         // If the user successfully scrolled to the next page, scroll to the correct index in the tab collection view
         if currentPageIndex == pendingPageIndex && scrollView != self.tabBar.tabCollectionView {
+            let tabWidth = self.tabBar.tabWidth ?? 0
+            
             DispatchQueue.main.async {
-                self.tabBar.tabCollectionView.scrollToItem(at: IndexPath(row: currentPageIndex, section: 0), at: .centeredHorizontally, animated: true)
+                // The scrolling animation has stopped so reset the pages scrolled count
+                self.pageViewController?.pagesScrolledForCurrentTransition = 0
+                
+                switch self.tabBar.transitionStyle {
+                case .normal:
+                    self.tabBar.tabCollectionView.scrollToItem(at: IndexPath(row: currentPageIndex, section: 0), at: .centeredHorizontally, animated: true)
+                case .sticky:
+                    UIView.animate(withDuration: 0.2, animations: {
+                        self.tabBar.selectionSliderWidthConstraint?.constant = tabWidth
+                        self.tabBar.selectionSliderLeadingConstraint?.constant = tabWidth * CGFloat(currentPageIndex) - self.tabBar.tabCollectionView.contentOffset.x
+                        self.layoutIfNeeded()
+                    }) { (_) in
+                        self.tabBar.tabCollectionView.scrollToItem(at: IndexPath(row: currentPageIndex, section: 0), at: .centeredHorizontally, animated: true)
+                    }
+                }
+            }
+        }    }
+    
+    // Used when scrolling programatically (user select tab from tab bar)
+    public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        guard let pendingPageIndex = pageViewController?.pendingIndex else { return }
+        guard let currentPageIndex = pageViewController?.currentIndex else { return }
+        // The function is called each time we traverse across a new page so if we select a tab two indexes away
+        //      then this will be called twice. But we only want it called once the final page is reached
+        if abs(currentPageIndex - pendingPageIndex) > 1 { return }
+        
+        
+        if scrollView != self.tabBar.tabCollectionView {
+            let tabWidth = self.tabBar.tabWidth ?? 0
+            
+            DispatchQueue.main.async {
+                // The scrolling animation has stopped so reset the pages scrolled count
+                self.pageViewController?.pagesScrolledForCurrentTransition = 0
+                
+                switch self.tabBar.transitionStyle {
+                case .sticky:
+                    UIView.animate(withDuration: 0.2, animations: {
+                        self.tabBar.selectionSliderWidthConstraint?.constant = tabWidth
+                        self.tabBar.selectionSliderLeadingConstraint?.constant = tabWidth * CGFloat(pendingPageIndex) - self.tabBar.tabCollectionView.contentOffset.x
+                        self.layoutIfNeeded()
+                    }) { (_) in
+                        self.tabBar.tabCollectionView.scrollToItem(at: IndexPath(row: pendingPageIndex, section: 0), at: .centeredHorizontally, animated: true)
+                    }
+                default:
+                    self.tabBar.tabCollectionView.scrollToItem(at: IndexPath(row: pendingPageIndex, section: 0), at: .centeredHorizontally, animated: true)
+                }
             }
         }
     }

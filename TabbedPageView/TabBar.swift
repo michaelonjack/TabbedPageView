@@ -31,6 +31,7 @@ public class TabBar: UIView {
     }()
     
     internal var selectionSliderLeadingConstraint: NSLayoutConstraint?
+    internal var selectionSliderWidthConstraint: NSLayoutConstraint?
     /// The slider bar used to indicate which tab is currently showing
     lazy internal var selectionSlider: UIView = {
         let view = UIView(frame: .zero)
@@ -43,6 +44,7 @@ public class TabBar: UIView {
     internal var sliderInitialOffset:CGFloat = 0
     internal var tabCollectionViewPreviousContentOffset: CGFloat = 0
     public var position: TabBarPosition = .top
+    public var transitionStyle: TabBarTransitionStyle = .normal
     public var tabWidth: CGFloat?
     public var sliderColor:UIColor = UIColor.blue
     
@@ -110,6 +112,7 @@ public class TabBar: UIView {
         }
         
         selectionSliderLeadingConstraint = selectionSlider.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0)
+        selectionSliderWidthConstraint = selectionSlider.widthAnchor.constraint(equalToConstant: tabWidth ?? 0)
         
         NSLayoutConstraint.activate([
             // Collection view constraints
@@ -119,7 +122,7 @@ public class TabBar: UIView {
             
             // Selection indicator constraints
             selectionSliderLeadingConstraint!,
-            selectionSlider.widthAnchor.constraint(equalToConstant: tabWidth ?? 0),
+            selectionSliderWidthConstraint!,
             selectionSlider.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.08)
             ])
     }

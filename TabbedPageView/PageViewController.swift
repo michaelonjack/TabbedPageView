@@ -10,10 +10,11 @@ import UIKit
 
 public class PageViewController: UIPageViewController {
     
-    var currentIndex = 0
-    var pendingIndex = 0
+    internal var currentIndex = 0
+    internal var pendingIndex = 0
+    internal var pagesScrolledForCurrentTransition = 0
     
-    var controllers:[UIViewController] = []
+    internal var controllers:[UIViewController] = []
     
     init(controllers: [UIViewController]) {
         self.controllers = controllers
