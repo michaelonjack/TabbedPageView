@@ -175,6 +175,17 @@ extension TabbedPageView: UICollectionViewDelegate {
                 let newIndex = nextIndex
                 pageViewController.setViewControllers([controllerToShow], direction: scrollDirection, animated: true) { (completed) in
                     pageViewController.currentIndex = newIndex
+                    
+                    if completed {
+                        DispatchQueue.main.async {
+                            pageViewController.pagesScrolledForCurrentTransition += 1
+                            
+                            // If we've reached the destination page, reset the pages scrolled count for the next transition
+                            if indexPath.row == newIndex {
+                                pageViewController.pagesScrolledForCurrentTransition = 0
+                            }
+                        }
+                    }
                 }
                 
                 nextIndex = nextIndex + 1
@@ -196,6 +207,17 @@ extension TabbedPageView: UICollectionViewDelegate {
                 let newIndex = nextIndex
                 pageViewController.setViewControllers([controllerToShow], direction: scrollDirection, animated: true) { (completed) in
                     pageViewController.currentIndex = newIndex
+                    
+                    if completed {
+                        DispatchQueue.main.async {
+                            pageViewController.pagesScrolledForCurrentTransition += 1
+                            
+                            // If we've reached the destination page, reset the pages scrolled count for the next transition
+                            if indexPath.row == newIndex {
+                                pageViewController.pagesScrolledForCurrentTransition = 0
+                            }
+                        }
+                    }
                 }
                 
                 nextIndex = nextIndex - 1
@@ -322,13 +344,6 @@ extension TabbedPageView: UIScrollViewDelegate {
                     }
                 }
             }
-            
-            DispatchQueue.main.async {
-                // If the percent scrolled passes 1.0, it means we have fully transitioned past a page
-                if percentScrolled >= 1 || percentScrolled <= -1 {
-                    pageViewController.pagesScrolledForCurrentTransition += 1
-                }
-            }
         }
     }
     
@@ -341,8 +356,6 @@ extension TabbedPageView: UIScrollViewDelegate {
             let tabWidth = self.tabBar.tabWidth ?? 0
             
             DispatchQueue.main.async {
-                // The scrolling animation has stopped so reset the pages scrolled count
-                self.pageViewController?.pagesScrolledForCurrentTransition = 0
                 
                 switch self.tabBar.transitionStyle {
                 case .normal:
@@ -357,7 +370,8 @@ extension TabbedPageView: UIScrollViewDelegate {
                     }
                 }
             }
-        }    }
+        }
+    }
     
     // Used when scrolling programatically (user select tab from tab bar)
     public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
@@ -372,8 +386,6 @@ extension TabbedPageView: UIScrollViewDelegate {
             let tabWidth = self.tabBar.tabWidth ?? 0
             
             DispatchQueue.main.async {
-                // The scrolling animation has stopped so reset the pages scrolled count
-                self.pageViewController?.pagesScrolledForCurrentTransition = 0
                 
                 switch self.tabBar.transitionStyle {
                 case .sticky:
