@@ -2,7 +2,7 @@ Pod::Spec.new do |s|
 
 # 1
 s.platform = :ios
-s.ios.deployment_target = '12.0'
+s.ios.deployment_target = '9.0'
 s.name = "TabbedPageView"
 s.summary = "TabbedPageView allows a user to quickly create a UIView containing multiple controller views with navigation tabs."
 s.requires_arc = true

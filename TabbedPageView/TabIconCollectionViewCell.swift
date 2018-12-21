@@ -44,6 +44,6 @@ class TabIconCollectionViewCell: UICollectionViewCell {
             imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             imageView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.5),
             imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor)
-            ])
+        ])
     }
 }

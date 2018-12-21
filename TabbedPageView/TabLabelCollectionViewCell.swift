@@ -47,6 +47,6 @@ class TabLabelCollectionViewCell: UICollectionViewCell {
             label.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             label.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.8),
             label.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.8)
-            ])
+        ])
     }
 }

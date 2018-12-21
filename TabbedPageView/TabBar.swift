@@ -99,7 +99,7 @@ public class TabBar: UIView {
                 
                 // Selection indicator constraints
                 selectionSlider.topAnchor.constraint(equalTo: tabCollectionView.bottomAnchor, constant: 0),
-                ])
+            ])
             
         case .bottom:
             NSLayoutConstraint.activate([
@@ -108,7 +108,7 @@ public class TabBar: UIView {
                 
                 // Selection indicator constraints
                 selectionSlider.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0),
-                ])
+            ])
         }
         
         selectionSliderLeadingConstraint = selectionSlider.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0)
@@ -124,6 +124,6 @@ public class TabBar: UIView {
             selectionSliderLeadingConstraint!,
             selectionSliderWidthConstraint!,
             selectionSlider.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.08)
-            ])
+        ])
     }
 }
