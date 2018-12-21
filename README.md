@@ -5,9 +5,9 @@
 TabbedPageView is a UIView subclass that allows you to quickly create a tabbed subview anywhere in your application
 
 <div style="display:flex;">
-  <img src="Resources/TabbedPageViewExample1.gif" width="250">
-  <img src="Resources/TabbedPageViewExample2.gif" width="250">
-  <img src="Resources/TabbedPageViewExample3.gif" width="250">
+  <img src="https://raw.githubusercontent.com/michaelonjack/tabbedpageview/master/Resources/TabbedPageViewExample1.gif" width="250">
+  <img src="https://raw.githubusercontent.com/michaelonjack/tabbedpageview/master/Resources/TabbedPageViewExample2.gif" width="250">
+  <img src="https://raw.githubusercontent.com/michaelonjack/tabbedpageview/master/Resources/TabbedPageViewExample3.gif" width="250">
 </div>
 
 ## Usage Example
@@ -16,7 +16,7 @@ TabbedPageView is a UIView subclass that allows you to quickly create a tabbed s
 
 Add a UIView to your view controller in storyboard and specify its class as ```TabbedPageView```
 
-![](Resources/ExampleScreen2.png)
+![](https://raw.githubusercontent.com/michaelonjack/tabbedpageview/master/Resources/ExampleScreen2.png)
 
 ### Step 2
 
@@ -29,7 +29,7 @@ Create an outlet for the TabbedPageView in your code from your storyboard
 
 Create the view controllers that will represent your tabs in the ```TabbedPageView```
 
-![](Resources/ExampleScreen1.png)
+![](https://raw.githubusercontent.com/michaelonjack/tabbedpageview/master/Resources/ExampleScreen1.png)
 
 ### Step 4
 
