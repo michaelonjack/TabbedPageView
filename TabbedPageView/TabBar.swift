@@ -46,6 +46,7 @@ public class TabBar: UIView {
     public var position: TabBarPosition = .top
     public var transitionStyle: TabBarTransitionStyle = .normal
     public var tabWidth: CGFloat?
+    public var height: CGFloat?
     public var sliderColor:UIColor = UIColor.blue
     
     

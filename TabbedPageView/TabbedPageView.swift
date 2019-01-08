@@ -63,7 +63,7 @@ open class TabbedPageView: UIView {
                 // Container view constraint
                 containerView.topAnchor.constraint(equalTo: tabBar.bottomAnchor, constant: 0),
                 containerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0),
-                ])
+            ])
             
         case .bottom:
             NSLayoutConstraint.activate([
@@ -73,19 +73,22 @@ open class TabbedPageView: UIView {
                 // Container view constraint
                 containerView.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
                 containerView.bottomAnchor.constraint(equalTo: tabBar.topAnchor, constant: 0),
-                ])
+            ])
         }
         
         NSLayoutConstraint.activate([
             // Tab bar constraints
             tabBar.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0),
             tabBar.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0),
-            tabBar.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.07),
+            (tabBar.height == nil ?
+                tabBar.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.07) :
+                tabBar.heightAnchor.constraint(equalToConstant: tabBar.height!)
+            ),
             
             // Container view constraint
             containerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0),
             containerView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0),
-            ])
+        ])
     }
     
     private func initializeTabBar() {
