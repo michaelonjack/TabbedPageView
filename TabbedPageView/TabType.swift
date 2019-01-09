@@ -12,4 +12,5 @@ public enum TabType {
     case icon(UIImage?)
     case text(String)
     case attributedText(NSAttributedString?)
+    case iconWithText(UIImage?, NSAttributedString?)
 }

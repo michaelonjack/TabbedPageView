@@ -26,6 +26,7 @@ public class TabBar: UIView {
         cv.setCollectionViewLayout(self.tabCollectionViewFlowLayout, animated: true)
         cv.register(TabIconCollectionViewCell.self, forCellWithReuseIdentifier: "IconCell")
         cv.register(TabLabelCollectionViewCell.self, forCellWithReuseIdentifier: "LabelCell")
+        cv.register(TabIconLabelCollectionViewCell.self, forCellWithReuseIdentifier: "IconLabelCell")
         
         return cv
     }()

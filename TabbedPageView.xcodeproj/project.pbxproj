@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B144740D21E6AB2F00A3F010 /* TabIconLabelCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B144740C21E6AB2F00A3F010 /* TabIconLabelCollectionViewCell.swift */; };
 		B1A2B7A821B46FE800389E4D /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A2B7A721B46FE800389E4D /* TabBar.swift */; };
 		B1A2B7E821BA13D900389E4D /* TabType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A2B7E721BA13D900389E4D /* TabType.swift */; };
 		B1A2B7EA21BA144F00389E4D /* TabLabelCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1A2B7E921BA144F00389E4D /* TabLabelCollectionViewCell.swift */; };
@@ -34,6 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B144740C21E6AB2F00A3F010 /* TabIconLabelCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabIconLabelCollectionViewCell.swift; sourceTree = "<group>"; };
 		B1A2B7A721B46FE800389E4D /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		B1A2B7E721BA13D900389E4D /* TabType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabType.swift; sourceTree = "<group>"; };
 		B1A2B7E921BA144F00389E4D /* TabLabelCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabLabelCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 				B1EA3A0B21A13727002C7070 /* TabbedPageViewDelegate.swift */,
 				B1EA3A0721A13727002C7070 /* TabIconCollectionViewCell.swift */,
 				B1A2B7E921BA144F00389E4D /* TabLabelCollectionViewCell.swift */,
+				B144740C21E6AB2F00A3F010 /* TabIconLabelCollectionViewCell.swift */,
 				B1EA3A1521A13CC0002C7070 /* Resources */,
 				B1EA39E321A12CAA002C7070 /* Info.plist */,
 			);
@@ -242,6 +245,7 @@
 				B1EA3A1221A13728002C7070 /* TabbedPageViewDelegate.swift in Sources */,
 				B1A2B7A821B46FE800389E4D /* TabBar.swift in Sources */,
 				B1EA3A1421A13728002C7070 /* TabbedPageViewDataSource.swift in Sources */,
+				B144740D21E6AB2F00A3F010 /* TabIconLabelCollectionViewCell.swift in Sources */,
 				B1EA3A1021A13728002C7070 /* TabBarPosition.swift in Sources */,
 				B1A2B7EA21BA144F00389E4D /* TabLabelCollectionViewCell.swift in Sources */,
 				B1EA3A1121A13728002C7070 /* Tab.swift in Sources */,

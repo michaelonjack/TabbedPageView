@@ -5,9 +5,9 @@
 TabbedPageView is a UIView subclass that allows you to quickly create a tabbed subview anywhere in your application
 
 <div style="display:flex;">
-  <img src="https://raw.githubusercontent.com/michaelonjack/tabbedpageview/master/Resources/TabbedPageViewExample1.gif" width="250">
-  <img src="https://raw.githubusercontent.com/michaelonjack/tabbedpageview/master/Resources/TabbedPageViewExample2.gif" width="250">
-  <img src="https://raw.githubusercontent.com/michaelonjack/tabbedpageview/master/Resources/TabbedPageViewExample3.gif" width="250">
+    <img src="https://i.imgur.com/U0H0tTv.gif" width="250">
+    <img src="https://i.imgur.com/XqxmKB6.gif" width="250">
+    <img src="https://i.imgur.com/df8q0aL.gif" width="250">
 </div>
 
 ## Usage Example
@@ -16,7 +16,7 @@ TabbedPageView is a UIView subclass that allows you to quickly create a tabbed s
 
 Add a UIView to your view controller in storyboard and specify its class as ```TabbedPageView```
 
-![](https://raw.githubusercontent.com/michaelonjack/tabbedpageview/master/Resources/ExampleScreen2.png)
+![](https://i.imgur.com/LZ0Quj6.png)
 
 ### Step 2
 
@@ -29,7 +29,7 @@ Create an outlet for the TabbedPageView in your code from your storyboard
 
 Create the view controllers that will represent your tabs in the ```TabbedPageView```
 
-![](https://raw.githubusercontent.com/michaelonjack/tabbedpageview/master/Resources/ExampleScreen1.png)
+![](https://i.imgur.com/ARtc25z.png)
 
 ### Step 4
 
@@ -52,7 +52,11 @@ extension ViewController: TabbedPageViewDataSource {
 }
 ```
 
-Here's a breakdown of the required DataSource methods
+#### Delegate methods:
+
+```func tabbedPageView(_ tabbedPageView: TabbedPageView, didSelectTabAt index: Int)``` - Called when the user selects the tab at index ```index```
+
+#### DataSource methods:
 
 ```func numberOfTabs(in tabbedPageView: TabbedPageView) -> Int``` - The number of tabs that are present in the tabbed page view
 
@@ -89,3 +93,33 @@ override func viewDidLoad() {
     tabbedPageView.reloadData()
 }
 ```
+
+#### Customizabe Properties
+
+```tabBar.position``` - Positon of the tab bar in the view. Two possible values: ```TabBarPosition.top```, ```TabBarPosition.bottom```. By default, ```TabBarPosition.top``` is used.
+
+```tabBar.tabWidth``` - Width of the tabs in the view. By default, the width will be calculated as viewWidth / # of tabs.
+
+```tabBar.transitionStyle``` - Transition style used when switching tabs. Two possible values: ```TabBarTransitionStyle.normal```, ```TabBarTransitionStyle.sticky```. By default, ```TabBarTransitionStyle.normal``` is used.
+
+```tabBar.height``` - Height of the tab bar. By default, the height will be 7% of the total view height.
+
+```tabBar.sliderColor``` - Color of the slider used to inidicator which tab is currently selected.
+
+Since ```TabBar``` is a subclass of ```UIView```, other standard  ```UIView``` properties can also be modified.
+
+## Installation
+TabbedPageView is available through CocoaPods.
+
+Edit your ```Podfile``` and specify the dependency:
+
+```pod 'TabbedPageView'```
+
+## Requirements
+<ul>
+    <li>iOS 9.0+</li>
+    <li>Swift 4.2</l>
+</ul>
+
+## License
+TabbedPageView is available under the MIT license. See the LICENSE file for more info.

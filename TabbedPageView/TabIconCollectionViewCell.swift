@@ -42,7 +42,7 @@ class TabIconCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             imageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            imageView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.5),
+            imageView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.65),
             imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor)
         ])
     }

@@ -260,6 +260,13 @@ extension TabbedPageView: UICollectionViewDataSource {
             cell.label.attributedText = attributedTitle
             
             return cell
+            
+        case .iconWithText(let iconImage, let attributedTitle):
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "IconLabelCell", for: indexPath) as! TabIconLabelCollectionViewCell
+            cell.imageView.image = iconImage
+            cell.label.attributedText = attributedTitle
+            
+            return cell
         }
     }
 }
