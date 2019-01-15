@@ -10,6 +10,42 @@ TabbedPageView is a UIView subclass that allows you to quickly create a tabbed s
     <img src="https://i.imgur.com/df8q0aL.gif" width="250">
 </div>
 
+## Information
+
+### Delegate methods:
+
+```func tabbedPageView(_ tabbedPageView: TabbedPageView, didSelectTabAt index: Int)``` - Called when the user selects the tab at index ```index```
+
+### DataSource methods:
+
+```func numberOfTabs(in tabbedPageView: TabbedPageView) -> Int``` - The number of tabs that are present in the tabbed page view
+
+```func tabbedPageView(_ tabbedPageView: TabbedPageView, tabForIndex index: Int) -> Tab``` - Returns the tab object that should be displayed at index ```index```
+
+### Customizabe Properties
+
+```tabBar.position``` - Positon of the tab bar in the view. Two possible values: ```TabBarPosition.top```, ```TabBarPosition.bottom```. By default, ```TabBarPosition.top``` is used.
+
+```tabBar.tabWidth``` - Width of the tabs in the view. By default, the width will be calculated as viewWidth / # of tabs.
+
+```tabBar.transitionStyle``` - Transition style used when switching tabs. Two possible values: ```TabBarTransitionStyle.normal```, ```TabBarTransitionStyle.sticky```. By default, ```TabBarTransitionStyle.normal``` is used.
+
+```tabBar.height``` - Height of the tab bar. By default, the height will be 7% of the total view height.
+
+```tabBar.sliderColor``` - Color of the slider used to inidicator which tab is currently selected.
+
+Since ```TabBar``` is a subclass of ```UIView```, other standard  ```UIView``` properties can also be modified.
+
+### Tab Types
+
+```TabType.icon(UIImage?)``` - Tab that contains a single image
+
+```TabType.text(String)```  - Tab that contains a single label using a standard string as its text source
+
+```TabType.attributedText(NSAttributedString?)``` - Tab that contains a single label using an attributed string as its text source
+
+```TabType.iconWithText(UIImage?, NSAttributedString?)``` - Tab that contains a both an icon and label with the icon positioned above the label
+
 ## Usage Example
 
 ### Step 1
@@ -52,16 +88,6 @@ extension ViewController: TabbedPageViewDataSource {
 }
 ```
 
-#### Delegate methods:
-
-```func tabbedPageView(_ tabbedPageView: TabbedPageView, didSelectTabAt index: Int)``` - Called when the user selects the tab at index ```index```
-
-#### DataSource methods:
-
-```func numberOfTabs(in tabbedPageView: TabbedPageView) -> Int``` - The number of tabs that are present in the tabbed page view
-
-```func tabbedPageView(_ tabbedPageView: TabbedPageView, tabForIndex index: Int) -> Tab``` - Returns the tab object that should be displayed at index ```index```
-
 ### Step 5
 
 In your controller's viewDidLoad method, initialize your tabs and specify the TabbedPageView's data source and delegate and reload the view
@@ -93,20 +119,6 @@ override func viewDidLoad() {
     tabbedPageView.reloadData()
 }
 ```
-
-#### Customizabe Properties
-
-```tabBar.position``` - Positon of the tab bar in the view. Two possible values: ```TabBarPosition.top```, ```TabBarPosition.bottom```. By default, ```TabBarPosition.top``` is used.
-
-```tabBar.tabWidth``` - Width of the tabs in the view. By default, the width will be calculated as viewWidth / # of tabs.
-
-```tabBar.transitionStyle``` - Transition style used when switching tabs. Two possible values: ```TabBarTransitionStyle.normal```, ```TabBarTransitionStyle.sticky```. By default, ```TabBarTransitionStyle.normal``` is used.
-
-```tabBar.height``` - Height of the tab bar. By default, the height will be 7% of the total view height.
-
-```tabBar.sliderColor``` - Color of the slider used to inidicator which tab is currently selected.
-
-Since ```TabBar``` is a subclass of ```UIView```, other standard  ```UIView``` properties can also be modified.
 
 ## Installation
 TabbedPageView is available through CocoaPods.
