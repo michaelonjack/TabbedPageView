@@ -22,7 +22,7 @@ open class TabbedPageView: UIView {
     
     // View that contains the collection view that displays the different pages
     private lazy var tabContentView: TabContentView = {
-        let tcv = TabContentView(controllers: [])
+        let tcv = TabContentView(views: [])
         tcv.translatesAutoresizingMaskIntoConstraints = false
         
         return tcv
@@ -123,13 +123,13 @@ open class TabbedPageView: UIView {
     }
     
     private func initializeTabContents() {
-        var controllers:[UIViewController] = []
+        var views:[UIView] = []
         for index in 0..<dataSource!.numberOfTabs(in: self) {
             let tab = dataSource!.tabbedPageView(self, tabForIndex: index)
-            controllers.append(tab.viewController)
+            views.append(tab.view)
         }
         
-        tabContentView.controllers = controllers
+        tabContentView.views = views
         tabContentView.scrollViewDelegate = self
         tabContentView.tabContentCollectionView.reloadData()
     }
@@ -140,7 +140,7 @@ open class TabbedPageView: UIView {
         // Once the tabs are set, create the tab bar
         initializeTabBar()
         
-        // Once the controllers are set, initialize the tab contents
+        // Once the views are set, initialize the tab contents
         initializeTabContents()
         
         // Add constraints

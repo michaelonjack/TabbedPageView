@@ -8,13 +8,17 @@
 
 import UIKit
 
-
 public struct Tab {
     var type: TabType
-    var viewController: UIViewController!
+    var view: UIView!
+    
+    public init(view: UIView, type: TabType) {
+        self.type = type
+        self.view = view
+    }
     
     public init(viewController: UIViewController, type: TabType) {
         self.type = type
-        self.viewController = viewController
+        self.view = viewController.view
     }
 }

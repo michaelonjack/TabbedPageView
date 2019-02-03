@@ -28,14 +28,14 @@ class TabContentView: UIView {
         return cv
     }()
     
-    internal var controllers: [UIViewController] = []
+    internal var views: [UIView] = []
     internal var scrollViewDelegate: TabContentScrollViewDelegate?
     internal var previousTabContentOffset: CGFloat = 0
     
-    init(controllers: [UIViewController]) {
+    init(views: [UIView]) {
         super.init(frame: CGRect.zero)
         
-        self.controllers = controllers
+        self.views = views
         tabContentCollectionView.delegate = self
         tabContentCollectionView.dataSource = self
         
@@ -76,21 +76,21 @@ extension TabContentView: UICollectionViewDelegate {
 
 extension TabContentView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return controllers.count
+        return views.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = tabContentCollectionView.dequeueReusableCell(withReuseIdentifier: "cellId", for: indexPath)
         
-        guard let controllerView = controllers[indexPath.row].view else { return cell }
-        controllerView.translatesAutoresizingMaskIntoConstraints = false
-        cell.addSubview(controllerView)
+        let view = views[indexPath.row]
+        view.translatesAutoresizingMaskIntoConstraints = false
+        cell.addSubview(view)
         
         NSLayoutConstraint.activate([
-            controllerView.topAnchor.constraint(equalTo: cell.topAnchor),
-            controllerView.bottomAnchor.constraint(equalTo: cell.bottomAnchor),
-            controllerView.leadingAnchor.constraint(equalTo: cell.leadingAnchor),
-            controllerView.trailingAnchor.constraint(equalTo: cell.trailingAnchor)
+            view.topAnchor.constraint(equalTo: cell.topAnchor),
+            view.bottomAnchor.constraint(equalTo: cell.bottomAnchor),
+            view.leadingAnchor.constraint(equalTo: cell.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: cell.trailingAnchor)
         ])
         
         return cell
