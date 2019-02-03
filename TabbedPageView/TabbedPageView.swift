@@ -9,8 +9,8 @@
 import UIKit
 
 open class TabbedPageView: UIView {
-    open var delegate: TabbedPageViewDelegate?
-    open var dataSource: TabbedPageViewDataSource?
+    open weak var delegate: TabbedPageViewDelegate?
+    open weak var dataSource: TabbedPageViewDataSource?
     
     // The container view that contains the tab content (views)
     private lazy var containerView: UIView = {
