@@ -36,6 +36,9 @@ open class TabbedPageView: UIView {
         return tb
     }()
     
+    // Determines if the user can manually swipe through the tab views or if they're required to press the tab headers in order to change tabs
+    public var isManualScrollingEnabled: Bool = true
+    
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupView()
@@ -131,6 +134,7 @@ open class TabbedPageView: UIView {
         
         tabContentView.views = views
         tabContentView.scrollViewDelegate = self
+        tabContentView.tabContentCollectionView.isScrollEnabled = isManualScrollingEnabled
         tabContentView.tabContentCollectionView.reloadData()
     }
     
