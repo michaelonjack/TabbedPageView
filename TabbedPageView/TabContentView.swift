@@ -21,7 +21,7 @@ class TabContentView: UIView {
         var cv = UICollectionView(frame: CGRect.zero, collectionViewLayout: tabContentCollectionViewFlowLayout)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.showsHorizontalScrollIndicator = false
-        cv.backgroundColor = .black
+        cv.backgroundColor = .clear
         cv.isPagingEnabled = true
         cv.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cellId")
         
