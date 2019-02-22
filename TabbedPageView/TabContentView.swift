@@ -25,6 +25,10 @@ class TabContentView: UIView {
         cv.isPagingEnabled = true
         cv.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cellId")
         
+        if #available(iOS 11.0, *) {
+            cv.contentInsetAdjustmentBehavior = .never
+        }
+        
         return cv
     }()
     
