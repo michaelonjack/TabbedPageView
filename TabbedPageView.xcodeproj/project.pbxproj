@@ -24,6 +24,7 @@
 		B1EA3A1321A13728002C7070 /* TabbedPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EA3A0C21A13727002C7070 /* TabbedPageView.swift */; };
 		B1EA3A1421A13728002C7070 /* TabbedPageViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EA3A0D21A13727002C7070 /* TabbedPageViewDataSource.swift */; };
 		B1F6B9742291B7B000E58CFD /* TabContentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F6B9732291B7B000E58CFD /* TabContentCollectionViewCell.swift */; };
+		B1F6B9782294BCA100E58CFD /* TabSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F6B9772294BCA100E58CFD /* TabSource.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		B1EA3A0C21A13727002C7070 /* TabbedPageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabbedPageView.swift; sourceTree = "<group>"; };
 		B1EA3A0D21A13727002C7070 /* TabbedPageViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabbedPageViewDataSource.swift; sourceTree = "<group>"; };
 		B1F6B9732291B7B000E58CFD /* TabContentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabContentCollectionViewCell.swift; sourceTree = "<group>"; };
+		B1F6B9772294BCA100E58CFD /* TabSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabSource.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +107,7 @@
 				B1EA3A0921A13727002C7070 /* TabBarPosition.swift */,
 				B1A2B7ED21C57D0300389E4D /* TabBarTransitionStyle.swift */,
 				B1A2B7E721BA13D900389E4D /* TabType.swift */,
+				B1F6B9772294BCA100E58CFD /* TabSource.swift */,
 				B1EA3A0C21A13727002C7070 /* TabbedPageView.swift */,
 				B144750921ED120800A3F010 /* TabContentView.swift */,
 				B144750B21ED122800A3F010 /* TabContentScrollViewDelegate.swift */,
@@ -253,6 +256,7 @@
 				B144750C21ED122800A3F010 /* TabContentScrollViewDelegate.swift in Sources */,
 				B1EA3A1221A13728002C7070 /* TabbedPageViewDelegate.swift in Sources */,
 				B1A2B7A821B46FE800389E4D /* TabBar.swift in Sources */,
+				B1F6B9782294BCA100E58CFD /* TabSource.swift in Sources */,
 				B1EA3A1421A13728002C7070 /* TabbedPageViewDataSource.swift in Sources */,
 				B144740D21E6AB2F00A3F010 /* TabIconLabelCollectionViewCell.swift in Sources */,
 				B144750A21ED120800A3F010 /* TabContentView.swift in Sources */,

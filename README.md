@@ -46,6 +46,12 @@ Since ```TabBar``` is a subclass of ```UIView```, other standard  ```UIView``` p
 
 ```TabType.iconWithText(UIImage?, NSAttributedString?)``` - Tab that contains a both an icon and label with the icon positioned above the label
 
+### Tab Sources
+
+```TabSource.view(UIView)``` - Tab whose content view comes from a UIView
+
+```TabSource.viewController(UIViewController)```  - Tab whose content source comes from the view of a UIViewController
+
 ## Usage Example
 
 ### Step 1
@@ -104,9 +110,9 @@ override func viewDidLoad() {
     let controller3 = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "View3")
 
     tabs = [
-        Tab(viewController: controller1, type: .icon(UIImage(named: "Grid")!)),
-        Tab(viewController: controller2, type: .text("TAB2")),
-        Tab(viewController: controller3, type: .attributedText(myString))
+        Tab(contentSource: .viewController(controller1), type: .icon(UIImage(named: "Grid")!)),
+        Tab(contentSource: .viewController(controller2), type: .text("TAB2")),
+        Tab(contentSource: .viewController(controller3), type: .attributedText(myString))
     ]
 
     tabbedPageView.tabBar.sliderColor = UIColor.magenta

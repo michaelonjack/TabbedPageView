@@ -32,14 +32,14 @@ class TabContentView: UIView {
         return cv
     }()
     
-    internal var viewControllers: [UIViewController] = []
+    internal var views: [UIView] = []
     internal var scrollViewDelegate: TabContentScrollViewDelegate?
     internal var previousTabContentOffset: CGFloat = 0
     
-    init(viewControllers: [UIViewController]) {
+    init(views: [UIView]) {
         super.init(frame: CGRect.zero)
         
-        self.viewControllers = viewControllers
+        self.views = views
         tabContentCollectionView.delegate = self
         tabContentCollectionView.dataSource = self
         
@@ -80,7 +80,7 @@ extension TabContentView: UICollectionViewDelegate {
 
 extension TabContentView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewControllers.count
+        return views.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -88,8 +88,7 @@ extension TabContentView: UICollectionViewDataSource {
         
         guard let tabContentCell = cell as? TabContentCollectionViewCell else { return cell }
         
-        let viewController = viewControllers[indexPath.row]
-        tabContentCell.hostedView = viewController.view
+        tabContentCell.hostedView = views[indexPath.row]
         
         return tabContentCell
     }

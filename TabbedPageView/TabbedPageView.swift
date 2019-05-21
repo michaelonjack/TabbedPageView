@@ -22,7 +22,7 @@ open class TabbedPageView: UIView {
     
     // View that contains the collection view that displays the different pages
     private lazy var tabContentView: TabContentView = {
-        let tcv = TabContentView(viewControllers: [])
+        let tcv = TabContentView(views: [])
         tcv.translatesAutoresizingMaskIntoConstraints = false
         
         return tcv
@@ -128,16 +128,22 @@ open class TabbedPageView: UIView {
     private func initializeTabContents() {
         let parentViewController = getViewController(for: self)
         
-        var viewControllers:[UIViewController] = []
+        var views:[UIView] = []
         for index in 0..<dataSource!.numberOfTabs(in: self) {
             let tab = dataSource!.tabbedPageView(self, tabForIndex: index)
-            viewControllers.append(tab.viewController)
             
-            parentViewController?.addChild(tab.viewController)
-            tab.viewController.didMove(toParent: parentViewController)
+            switch tab.source {
+            case .view(let view):
+                views.append(view)
+            case .viewController(let viewController):
+                parentViewController?.addChild(viewController)
+                viewController.didMove(toParent: parentViewController)
+                
+                views.append(viewController.view)
+            }
         }
         
-        tabContentView.viewControllers = viewControllers
+        tabContentView.views = views
         tabContentView.scrollViewDelegate = self
         tabContentView.tabContentCollectionView.isScrollEnabled = isManualScrollingEnabled
         tabContentView.tabContentCollectionView.reloadData()
