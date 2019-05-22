@@ -15,8 +15,16 @@ class TabContentCollectionViewCell: UICollectionViewCell {
         didSet {
             guard let hostedView = hostedView else { return }
             
-            hostedView.frame = contentView.bounds
+            hostedView.translatesAutoresizingMaskIntoConstraints = false
+            
             contentView.addSubview(hostedView)
+            
+            NSLayoutConstraint.activate([
+                hostedView.topAnchor.constraint(equalTo: contentView.topAnchor),
+                hostedView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+                hostedView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+                hostedView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+            ])
         }
     }
     
